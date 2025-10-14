@@ -12,10 +12,8 @@ use litesvm_token::{
 };
 use spl_associated_token_account::get_associated_token_address;
 use sha2::{Sha256, Digest};
-use borsh::BorshSerialize;
-use solana_program_pack::Pack;
 
-#[derive(Debug, BorshSerialize)]
+#[derive(Debug)]
 struct MakeArgs {
     seed: u64,
     receive: u64,
@@ -225,20 +223,17 @@ fn test_make_and_take_with_litesvm() {
 
             // Check final token balances
             // Taker should have received tokens from mint_a
-            let taker_ata_a_data = svm.get_account(&taker_ata_a).unwrap();
-            let taker_ata_a_state = spl_token::state::Account::unpack(&taker_ata_a_data.data).unwrap();
+            let taker_ata_a_state = litesvm_token::get_spl_account::<spl_token::state::Account>(&svm, &taker_ata_a).unwrap();
             assert_eq!(taker_ata_a_state.amount, 1_000_000_000, "Taker should have received 1 token from mint_a");
             println!("Taker received {} tokens from mint_a", taker_ata_a_state.amount as f64 / 1_000_000_000.0);
 
             // Taker should have sent tokens from mint_b
-            let taker_ata_b_data = svm.get_account(&taker_ata_b).unwrap();
-            let taker_ata_b_state = spl_token::state::Account::unpack(&taker_ata_b_data.data).unwrap();
+            let taker_ata_b_state = litesvm_token::get_spl_account::<spl_token::state::Account>(&svm, &taker_ata_b).unwrap();
             assert_eq!(taker_ata_b_state.amount, 0, "Taker should have sent all tokens from mint_b");
             println!("Taker has {} tokens from mint_b (after sending)", taker_ata_b_state.amount);
 
             // Maker should have received tokens from mint_b
-            let maker_ata_b_data = svm.get_account(&maker_ata_b).unwrap();
-            let maker_ata_b_state = spl_token::state::Account::unpack(&maker_ata_b_data.data).unwrap();
+            let maker_ata_b_state = litesvm_token::get_spl_account::<spl_token::state::Account>(&svm, &maker_ata_b).unwrap();
             assert_eq!(maker_ata_b_state.amount, 500_000_000, "Maker should have received 0.5 tokens from mint_b");
             println!("Maker received {} tokens from mint_b", maker_ata_b_state.amount as f64 / 1_000_000_000.0);
 
