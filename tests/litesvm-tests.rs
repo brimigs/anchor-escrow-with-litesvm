@@ -118,7 +118,7 @@ fn test_make_and_take_with_litesvm() {
     };
 
     let mut make_instruction_data = make_discriminator.to_vec();
-    make_instruction_data.extend_from_slice(&seed.to_le_bytes());
+    make_instruction_data.extend_from_slice(&make_args.seed.to_le_bytes());
     make_instruction_data.extend_from_slice(&make_args.receive.to_le_bytes());
     make_instruction_data.extend_from_slice(&make_args.amount.to_le_bytes());
 
