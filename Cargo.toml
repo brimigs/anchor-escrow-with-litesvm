@@ -20,12 +20,23 @@ edition = "2021"
 name = "litesvm-tests"
 path = "tests/litesvm-tests.rs"
 
+[[test]]
+name = "utils-tests"
+path = "tests/utils-tests.rs"
+
+[[test]]
+name = "verify-anchor-litesvm"
+path = "tests/verify-anchor-litesvm.rs"
+
 [dependencies]
 anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
 
 [dev-dependencies]
 litesvm = "0.6.1"
 litesvm-token = "0.6.1"
+anchor-litesvm = "0.2.0"
+litesvm-utils = "0.2.0"
 solana-sdk = "2.2"
 spl-associated-token-account = "6.0"
 sha2 = "0.10"
+hex = "0.4"
